@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:garbagecollector/carbage.dart';
+
+final List<String> garbageBins = ['Green', 'Blue', 'Yellow', 'Red'];
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -11,7 +14,8 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
-  static double carbageYaxis = -1.5;
+  static double carbageYaxis = -1.2;
+  int currentPos = 0;
   double time = 0;
   double height = 0;
   double initialHeight = carbageYaxis;
@@ -26,7 +30,7 @@ class _homePageState extends State<homePage> {
       setState(() {
         carbageYaxis = initialHeight - height;
       });
-      if (carbageYaxis > 1) {
+      if (carbageYaxis > 1.7) {
         timer.cancel();
         gameStarted = false;
       }
@@ -59,33 +63,54 @@ class _homePageState extends State<homePage> {
                     alignment: Alignment(0, 0),
                     child: gameStarted
                         ? Text('')
-                        // : Text('Tap to start' + initialHeight.toString()))
-                        : Text('Tap to start'))
+                        : Text('Tap to start' + currentPos.toString()))
               ],
             ),
           ),
           Expanded(
-              child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.blue,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Colors.yellow,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Colors.red,
-                ),
-              ),
-            ],
+              child: CarouselSlider.builder(
+            itemCount: garbageBins.length,
+            options: CarouselOptions(
+                height: 400.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentPos = index;
+                  });
+                }),
+            itemBuilder: (ctx, index, realIdx) {
+              return MyImageView(garbageBins[index]);
+            },
+            //  {
+            //   return Builder(
+            //     builder: (BuildContext context) {
+            //       return Container(
+            //           width: MediaQuery.of(context).size.width,
+            //           decoration: BoxDecoration(color: Colors.amber),
+            //           child: Text(,
+            //             style: TextStyle(fontSize: 16.0),
+            //           ));
+            //     },
+            //   );
+            // }).toList(),
           )),
         ],
       ),
     );
+  }
+}
+
+class MyImageView extends StatelessWidget {
+  String imgPath;
+
+  MyImageView(this.imgPath);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text(imgPath));
+    // margin: EdgeInsets.symmetric(horizontal: 5),
+    // child: FittedBox(
+    //   fit: BoxFit.fill,
+    //   child: Image.asset(imgPath),
+    // ));
   }
 }
