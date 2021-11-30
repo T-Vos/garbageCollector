@@ -21,25 +21,39 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   static double carbageYaxis = -1.2;
-  int currentPos = 0;
+  int selectedGarbageDisposal = 0;
   double time = 0;
   double height = 0;
   double initialHeight = carbageYaxis;
   int score = 0;
   bool gameStarted = false;
+  var rng = new Random();
+  int randomGarbageType = 0;
 
   void startGame() {
+    randomGarbageType = rng.nextInt(4);
     gameStarted = true;
     Timer.periodic(Duration(milliseconds: 60), (timer) {
-      time += 0.007 + (0.007 * score);
+      time += 0.007;
       height = -4.9 * time * time;
       setState(() {
         carbageYaxis = initialHeight - height;
       });
-      if (carbageYaxis > 1.7) {
-        timer.cancel();
-        gameStarted = false;
-      }
+      setState(() {
+        if (carbageYaxis > 1.25) {
+          if (randomGarbageType == selectedGarbageDisposal) {
+            // Correct bin, so add score and restart
+            carbageYaxis = -1.2;
+            time = 0;
+            score++;
+            randomGarbageType = rng.nextInt(4);
+          } else {
+            // Wrong bin, stop game
+            timer.cancel();
+            gameStarted = false;
+          }
+        }
+      });
     });
   }
 
@@ -49,7 +63,7 @@ class _homePageState extends State<homePage> {
       body: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Stack(
               children: [
                 GestureDetector(
@@ -61,14 +75,15 @@ class _homePageState extends State<homePage> {
                   child: AnimatedContainer(
                     alignment: Alignment(0, carbageYaxis),
                     duration: Duration(milliseconds: 0),
-                    child: garbageMaterial(),
+                    color: Colors.white,
+                    child: garbageMaterial(randomGarbageType),
                   ),
                 ),
                 Container(
                     alignment: Alignment(0, 0),
                     child: gameStarted
-                        ? Text('')
-                        : Text('T A P   T O   S T A R T'))
+                        ? Text(score.toString() + '/3')
+                        : Text('Tap to start'))
               ],
             ),
           ),
@@ -79,7 +94,7 @@ class _homePageState extends State<homePage> {
                 height: 400.0,
                 onPageChanged: (index, reason) {
                   setState(() {
-                    currentPos = index;
+                    selectedGarbageDisposal = index;
                   });
                 }),
             itemBuilder: (ctx, index, realIdx) {
@@ -93,18 +108,16 @@ class _homePageState extends State<homePage> {
 }
 
 class MyImageView extends StatelessWidget {
-  String imgPath;
-
   MyImageView(this.imgPath);
-
+  final String imgPath;
   @override
   Widget build(BuildContext context) {
-    // return Container(child: Text(imgPath));
-    return FittedBox(
-      fit: BoxFit.fill,
-      // child: Image.asset('assets/images/' + imgPath + 'Bin.png'),
-      child: Image.asset(imgPath),
-      // child: Image.asset('assets/images/RedBin.png'),
-    );
+    return Container(
+        width: 100,
+        color: Colors.white,
+        child: FittedBox(
+          fit: BoxFit.fitHeight,
+          child: Image.asset(imgPath),
+        ));
   }
 }
