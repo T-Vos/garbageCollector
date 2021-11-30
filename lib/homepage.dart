@@ -5,7 +5,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:garbagecollector/carbage.dart';
 
-final List<String> garbageBins = ['Green', 'Blue', 'Yellow', 'Red'];
+List<String> garbageBins = [
+  'assets/images/GreenBin.png',
+  'assets/images/YellowBin.png',
+  'assets/images/BlueBin.png',
+  'assets/images/RedBin.png',
+];
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -44,7 +49,7 @@ class _homePageState extends State<homePage> {
       body: Column(
         children: [
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Stack(
               children: [
                 GestureDetector(
@@ -56,13 +61,14 @@ class _homePageState extends State<homePage> {
                   child: AnimatedContainer(
                     alignment: Alignment(0, carbageYaxis),
                     duration: Duration(milliseconds: 0),
-                    color: Colors.lightGreen,
                     child: garbageMaterial(),
                   ),
                 ),
                 Container(
                     alignment: Alignment(0, 0),
-                    child: gameStarted ? Text('') : Text('SWIPE TO START'))
+                    child: gameStarted
+                        ? Text('')
+                        : Text('T A P   T O   S T A R T'))
               ],
             ),
           ),
@@ -79,18 +85,6 @@ class _homePageState extends State<homePage> {
             itemBuilder: (ctx, index, realIdx) {
               return MyImageView(garbageBins[index]);
             },
-            //  {
-            //   return Builder(
-            //     builder: (BuildContext context) {
-            //       return Container(
-            //           width: MediaQuery.of(context).size.width,
-            //           decoration: BoxDecoration(color: Colors.amber),
-            //           child: Text(,
-            //             style: TextStyle(fontSize: 16.0),
-            //           ));
-            //     },
-            //   );
-            // }).toList(),
           )),
         ],
       ),
@@ -105,11 +99,12 @@ class MyImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(imgPath));
-    // margin: EdgeInsets.symmetric(horizontal: 5),
-    // child: FittedBox(
-    //   fit: BoxFit.fill,
-    //   child: Image.asset(imgPath),
-    // ));
+    // return Container(child: Text(imgPath));
+    return FittedBox(
+      fit: BoxFit.fill,
+      // child: Image.asset('assets/images/' + imgPath + 'Bin.png'),
+      child: Image.asset(imgPath),
+      // child: Image.asset('assets/images/RedBin.png'),
+    );
   }
 }
