@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _homePageState extends State<homePage> {
   void startGame() {
     gameStarted = true;
     Timer.periodic(Duration(milliseconds: 60), (timer) {
-      time += 0.007;
+      time += 0.007 + (0.007 * score);
       height = -4.9 * time * time;
       setState(() {
         carbageYaxis = initialHeight - height;
@@ -61,9 +62,7 @@ class _homePageState extends State<homePage> {
                 ),
                 Container(
                     alignment: Alignment(0, 0),
-                    child: gameStarted
-                        ? Text('')
-                        : Text('Tap to start' + currentPos.toString()))
+                    child: gameStarted ? Text('') : Text('SWIPE TO START'))
               ],
             ),
           ),
