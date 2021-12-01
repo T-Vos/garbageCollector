@@ -12,6 +12,9 @@ List<String> garbageBins = [
   'assets/images/RedBin.png',
 ];
 
+const greeting = 'Hi Fiona';
+const startText = 'T A P    T O   S T A R T';
+
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
 
@@ -20,7 +23,7 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
-  static double carbageYaxis = -1.2;
+  static double carbageYaxis = -1.5;
   int selectedGarbageDisposal = 0;
   double time = 0;
   double height = 0;
@@ -29,28 +32,32 @@ class _homePageState extends State<homePage> {
   bool gameStarted = false;
   var rng = new Random();
   int randomGarbageType = 0;
+  int randomImage = 0;
 
   void startGame() {
     randomGarbageType = rng.nextInt(4);
+    randomImage = rng.nextInt(2);
     gameStarted = true;
     Timer.periodic(Duration(milliseconds: 60), (timer) {
-      time += 0.007;
+      time += 0.007 + (0.007 * (log(pow(1.2, score))));
       height = -4.9 * time * time;
       setState(() {
         carbageYaxis = initialHeight - height;
       });
       setState(() {
         if (carbageYaxis > 1.25) {
+          if (score == 5) {
+            timer.cancel();
+          }
           if (randomGarbageType == selectedGarbageDisposal) {
             // Correct bin, so add score and restart
-            carbageYaxis = -1.2;
+            carbageYaxis = -1.5;
             time = 0;
             score++;
             randomGarbageType = rng.nextInt(4);
           } else {
             // Wrong bin, stop game
             timer.cancel();
-            gameStarted = false;
           }
         }
       });
@@ -76,14 +83,29 @@ class _homePageState extends State<homePage> {
                     alignment: Alignment(0, carbageYaxis),
                     duration: Duration(milliseconds: 0),
                     color: Colors.white,
-                    child: garbageMaterial(randomGarbageType),
+                    child: garbageMaterial(randomGarbageType, randomImage),
                   ),
                 ),
                 Container(
                     alignment: Alignment(0, 0),
                     child: gameStarted
-                        ? Text(score.toString() + '/3')
-                        : Text('Tap to start'))
+                        ? Text(score.toString() + ' / 5',
+                            style: TextStyle(color: Colors.grey, fontSize: 20))
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                greeting,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 35),
+                              ),
+                              Text(
+                                startText,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 20),
+                              )
+                            ],
+                          ))
               ],
             ),
           ),
