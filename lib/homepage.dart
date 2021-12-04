@@ -46,8 +46,9 @@ class _homePageState extends State<homePage> {
       });
       setState(() {
         if (carbageYaxis > 1.25) {
-          if (score == 5) {
+          if (score == 4) {
             timer.cancel();
+            _showDialog();
           }
           if (randomGarbageType == selectedGarbageDisposal) {
             // Correct bin, so add score and restart
@@ -57,11 +58,90 @@ class _homePageState extends State<homePage> {
             randomGarbageType = rng.nextInt(4);
           } else {
             // Wrong bin, stop game
+            _showDialog();
             timer.cancel();
           }
         }
       });
     });
+  }
+
+  void resetGame() {
+    Navigator.pop(context); // dismisses the alert dialog
+    setState(() {
+      carbageYaxis = -1.5;
+      time = 0;
+      gameStarted = false;
+      time = 0;
+      score = 0;
+      initialHeight = carbageYaxis;
+    });
+  }
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return (score >= 4)
+              ? AlertDialog(
+                  backgroundColor: Colors.red.shade800,
+                  title: Center(
+                    child: Text(
+                      "YOU   WON",
+                      style: TextStyle(color: Colors.amber.shade500),
+                    ),
+                  ),
+                  content: Text(
+                    'Congratulations you passed the exam! You may want to celebrate this with a nice victory selfie in the worldly mirror.',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  actions: [
+                    GestureDetector(
+                      onTap: resetGame,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          padding: EdgeInsets.all(7),
+                          color: Colors.amber.shade500,
+                          child: Text(
+                            'PLAY AGAIN',
+                            style: TextStyle(color: Colors.red.shade800),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : AlertDialog(
+                  backgroundColor: Colors.red.shade800,
+                  title: Center(
+                    child: Text(
+                      "G A M E  O V E R",
+                      style: TextStyle(color: Colors.amber.shade500),
+                    ),
+                  ),
+                  content: Text(
+                    'Unfortunally you did not pass the exam, please try again. Or ask the vosjes for some help',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  actions: [
+                    GestureDetector(
+                      onTap: resetGame,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          padding: EdgeInsets.all(7),
+                          color: Colors.amber.shade500,
+                          child: Text(
+                            'PLAY AGAIN',
+                            style: TextStyle(color: Colors.red.shade800),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+        });
   }
 
   @override
@@ -89,8 +169,19 @@ class _homePageState extends State<homePage> {
                 Container(
                     alignment: Alignment(0, 0),
                     child: gameStarted
-                        ? Text(score.toString() + ' / 5',
-                            style: TextStyle(color: Colors.grey, fontSize: 20))
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(score.toString() + ' / 5',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 20)),
+                              Text(
+                                score == 0 ? 'swipe the bins' : '',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 20),
+                              )
+                            ],
+                          )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
