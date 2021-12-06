@@ -172,7 +172,9 @@ class _homePageState extends State<homePage> {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(score.toString() + ' / 5',
+                              Text(
+                                  score.toString() +
+                                      ' / Highscore', // TODO: find a way to save highscore and display here
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 20)),
                               Text(
