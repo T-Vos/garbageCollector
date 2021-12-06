@@ -82,65 +82,65 @@ class _homePageState extends State<homePage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return (score >= 4)
-              ? AlertDialog(
-                  backgroundColor: Colors.red.shade800,
-                  title: Center(
+          // return (score >= 4)
+          //     ? AlertDialog(
+          //         backgroundColor: Colors.red.shade800,
+          //         title: Center(
+          //           child: Text(
+          //             "YOU   WON",
+          //             style: TextStyle(color: Colors.amber.shade500),
+          //           ),
+          //         ),
+          //         content: Text(
+          //           'Congratulations you passed the exam! You may want to celebrate this with a nice victory selfie in the worldly mirror.',
+          //           style: TextStyle(color: Colors.white),
+          //         ),
+          //         actions: [
+          //           GestureDetector(
+          //             onTap: resetGame,
+          //             child: ClipRRect(
+          //               borderRadius: BorderRadius.circular(5),
+          //               child: Container(
+          //                 padding: EdgeInsets.all(7),
+          //                 color: Colors.amber.shade500,
+          //                 child: Text(
+          //                   'PLAY AGAIN',
+          //                   style: TextStyle(color: Colors.red.shade800),
+          //                 ),
+          //               ),
+          //             ),
+          //           )
+          //         ],
+          //       )
+          return AlertDialog(
+            backgroundColor: Colors.red.shade800,
+            title: Center(
+              child: Text(
+                "G A M E  O V E R",
+                style: TextStyle(color: Colors.amber.shade500),
+              ),
+            ),
+            content: Text(
+              'Unfortunally you hit the wrong bin :((',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              GestureDetector(
+                onTap: resetGame,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    padding: EdgeInsets.all(7),
+                    color: Colors.amber.shade500,
                     child: Text(
-                      "YOU   WON",
-                      style: TextStyle(color: Colors.amber.shade500),
+                      'PLAY AGAIN',
+                      style: TextStyle(color: Colors.red.shade800),
                     ),
                   ),
-                  content: Text(
-                    'Congratulations you passed the exam! You may want to celebrate this with a nice victory selfie in the worldly mirror.',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  actions: [
-                    GestureDetector(
-                      onTap: resetGame,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          padding: EdgeInsets.all(7),
-                          color: Colors.amber.shade500,
-                          child: Text(
-                            'PLAY AGAIN',
-                            style: TextStyle(color: Colors.red.shade800),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              : AlertDialog(
-                  backgroundColor: Colors.red.shade800,
-                  title: Center(
-                    child: Text(
-                      "G A M E  O V E R",
-                      style: TextStyle(color: Colors.amber.shade500),
-                    ),
-                  ),
-                  content: Text(
-                    'Unfortunally you did not pass the exam, please try again. Or ask the vosjes for some help',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  actions: [
-                    GestureDetector(
-                      onTap: resetGame,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          padding: EdgeInsets.all(7),
-                          color: Colors.amber.shade500,
-                          child: Text(
-                            'PLAY AGAIN',
-                            style: TextStyle(color: Colors.red.shade800),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
+                ),
+              )
+            ],
+          );
         });
   }
 
